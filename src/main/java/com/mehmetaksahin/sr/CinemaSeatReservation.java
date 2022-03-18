@@ -1,5 +1,6 @@
 package com.mehmetaksahin.sr;
 
+import com.mehmetaksahin.sr.service.SeatReservationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,21 @@ public class CinemaSeatReservation {
         int rowCountOfTheater = getCountOfLine("Please enter number of rows in the movie theater");
         int seatsPerRowOfTheater = getCountOfLine("Please enter the number of seats in each row in the movie theater");
 
+
+        SeatReservationService seatReservationService = new SeatReservationService(rowCountOfTheater, seatsPerRowOfTheater);
+
+        seatReservationService.printSeatInfos(false);
+
+        // OK: C-4
+        seatReservationService.reserveOneSeat(2, 3);
+        // NOK: B-4
+        seatReservationService.reserveOneSeat(1, 3);
+        // OK: B-1
+        seatReservationService.reserveOneSeat(1, 0);
+        // NOK: D-2, D-3, D-4
+        seatReservationService.reserveManySeat(3, 1, 3);
+        // OK: D-1, D-2, D-3
+        seatReservationService.reserveManySeat(3, 0, 3);
 
     }
 
