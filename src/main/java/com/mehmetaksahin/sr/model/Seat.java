@@ -19,4 +19,12 @@ public class Seat {
         return "[Seat " + seatName + ", " + seatState.getStateName() + "]";
     }
 
+    public String getDetailedInfo() {
+        return "|" + seatName + "| " + seatState.getStateShortName() + " ";
+    }
+
+    public String getShortInfo() {
+        return "| " + seatState.getStateShortName() + " ";
+    }
+
 }

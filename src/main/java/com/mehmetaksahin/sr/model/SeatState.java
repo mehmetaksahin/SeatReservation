@@ -3,7 +3,7 @@ package com.mehmetaksahin.sr.model;
 public enum SeatState {
 
     AVAILABLE("Available", "A"),
-    NOT_AVAILABLE("Not Available ", "x"),
+    NOT_AVAILABLE("Not Available ", "-"),
     SOLD("Sold", "S");
 
     private String stateName;
