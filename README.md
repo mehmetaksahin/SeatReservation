@@ -5,10 +5,10 @@ This project includes seat reservation algorithms by following social distancing
 Initially, all seats in the hall are available. Each seat has a number. This seat number consists of letters and
 numbers. For example: B-3 or F-9
 
-The seats have three states:
-"A" Available
-"-" Not Available
-"S" Sold
+The seats have three states:<br/>
+"A" Available<br/>
+"-" Not Available<br/>
+"S" Sold<br/>
 
 Seats: <br/>
 
