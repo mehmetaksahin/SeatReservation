@@ -2,20 +2,28 @@ package com.mehmetaksahin.sr.service;
 
 import com.mehmetaksahin.sr.model.Seat;
 import com.mehmetaksahin.sr.model.SeatState;
+import com.mehmetaksahin.sr.utils.ReservationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SeatReservationService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SeatReservationService.class);
+    private static final int DEFAULT_ROW_COL_NUMBER = 10;
     private final int totalRowCount;
-    private final int seatsPerRow;
+    private final int totalColCount;
     private final Seat[][] seats;
 
-    public SeatReservationService(int totalRowCount, int seatsPerRow) {
+    public SeatReservationService(int totalRowCount, int totalColCount) {
+        if (!ReservationUtils.validateCountOfRowOrCol(totalRowCount) || !ReservationUtils.validateCountOfRowOrCol(totalColCount)) {
+            totalRowCount = DEFAULT_ROW_COL_NUMBER;
+            totalColCount = DEFAULT_ROW_COL_NUMBER;
+        }
         this.totalRowCount = totalRowCount;
-        this.seatsPerRow = seatsPerRow;
-        seats = new Seat[totalRowCount][seatsPerRow];
+        this.totalColCount = totalColCount;
+
+        seats = new Seat[totalRowCount][totalColCount];
+
         initSeatNames();
     }
 
@@ -80,7 +88,7 @@ public class SeatReservationService {
             seats[rowOfSeat][colOfSeat - 1].setSeatState(SeatState.NOT_AVAILABLE);
         }
         // right
-        if ((colOfSeat < seatsPerRow - 1) && !SeatState.SOLD.equals(seats[rowOfSeat][colOfSeat + 1].getSeatState())) {
+        if ((colOfSeat < totalColCount - 1) && !SeatState.SOLD.equals(seats[rowOfSeat][colOfSeat + 1].getSeatState())) {
             seats[rowOfSeat][colOfSeat + 1].setSeatState(SeatState.NOT_AVAILABLE);
         }
         // up
@@ -95,7 +103,7 @@ public class SeatReservationService {
 
     public void initSeatNames() {
         for (int i = 0; i < totalRowCount; i++) {
-            for (int j = 0; j < seatsPerRow; j++) {
+            for (int j = 0; j < totalColCount; j++) {
                 String seatName = ((char) (i + 1 + 'A' - 1)) + "-" + (j + 1);
                 seats[i][j] = new Seat(seatName, SeatState.AVAILABLE);
             }
@@ -106,7 +114,7 @@ public class SeatReservationService {
         StringBuilder seatInfos = new StringBuilder();
         seatInfos.append("\nMovie Screen\n-------------\n");
         for (int i = 0; i < totalRowCount; i++) {
-            for (int j = 0; j < seatsPerRow; j++) {
+            for (int j = 0; j < totalColCount; j++) {
                 seatInfos.append(shortInfo ? seats[i][j].getShortInfo() : seats[i][j].getDetailedInfo());
             }
             seatInfos.append("\n");
@@ -114,4 +122,15 @@ public class SeatReservationService {
         LOG.info("{}", seatInfos);
     }
 
+    public int getTotalRowCount() {
+        return totalRowCount;
+    }
+
+    public int getTotalColCount() {
+        return totalColCount;
+    }
+
+    public Seat[][] getSeats() {
+        return seats;
+    }
 }
